@@ -146,12 +146,64 @@ class DotNetAnalyzer:
 class TestGenerator:
     """Generates unit tests using LiteLLM"""
 
-    def __init__(self, stats: TestStats):
+    def __init__(self, stats: TestStats, project_dir: Path = None):
         self.stats = stats
+        self.project_dir = project_dir
+        self.dto_cache = {}  # Cache discovered DTOs
         # Configure LiteLLM
         litellm.set_verbose = False
         if OPENAI_API_KEY:
             os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+    def find_related_dtos(self, class_info: ClassInfo) -> str:
+        """Find DTOs referenced in the class and return their definitions"""
+        if not self.project_dir:
+            return ""
+
+        # Extract DTO type names from source code
+        dto_pattern = r'\b(\w+Dto)\b'
+        dto_names = set(re.findall(dto_pattern, class_info.source_code))
+
+        if not dto_names:
+            return ""
+
+        dto_definitions = []
+
+        # Search for DTO files in common locations
+        search_paths = [
+            self.project_dir.parent / "RemoteC.Shared" / "Models",
+            self.project_dir / "Models",
+            self.project_dir / "DTOs",
+        ]
+
+        for search_path in search_paths:
+            if not search_path.exists():
+                continue
+
+            for cs_file in search_path.rglob("*.cs"):
+                if cs_file.name in self.dto_cache:
+                    content = self.dto_cache[cs_file.name]
+                else:
+                    try:
+                        content = cs_file.read_text(encoding='utf-8', errors='ignore')
+                        self.dto_cache[cs_file.name] = content
+                    except:
+                        continue
+
+                # Extract matching DTO class definitions
+                for dto_name in dto_names:
+                    pattern = rf'public\s+class\s+{dto_name}\s*{{[^}}]*(?:{{[^}}]*}}[^}}]*)*}}'
+                    matches = re.findall(pattern, content, re.DOTALL)
+                    if matches:
+                        # Limit size to avoid token explosion
+                        dto_def = matches[0]
+                        if len(dto_def) < 1000:
+                            dto_definitions.append(f"// {dto_name} definition\n{dto_def}")
+
+        if dto_definitions:
+            return "\n\n**Related DTOs:**\n```csharp\n" + "\n\n".join(dto_definitions[:5]) + "\n```\n"
+
+        return ""
 
     def generate_test_prompt(self, class_info: ClassInfo, framework: str = "xunit") -> str:
         """Generate the prompt for test generation"""
@@ -162,13 +214,16 @@ class TestGenerator:
         if len(source) > max_source_len:
             source = source[:max_source_len] + "\n// ... (truncated)"
 
+        # Find related DTOs
+        dto_context = self.find_related_dtos(class_info)
+
         prompt = f"""You are an expert .NET test engineer. Generate comprehensive unit tests for the following C# class.
 
 **Class to Test:**
 ```csharp
 {source}
 ```
-
+{dto_context}
 **Requirements:**
 1. Use {framework.upper()} testing framework
 2. Use Moq for mocking dependencies: {', '.join(class_info.dependencies) if class_info.dependencies else 'None'}
@@ -311,7 +366,7 @@ def main(project_dir: Path, output_dir: Optional[Path], dry_run: bool, force: bo
     # Initialize
     analyzer = DotNetAnalyzer(project_dir)
     stats = TestStats()
-    generator = TestGenerator(stats)
+    generator = TestGenerator(stats, project_dir)
 
     # Find C# files
     console.print(f"\n[cyan]📁 Scanning {project_dir}...[/cyan]")
