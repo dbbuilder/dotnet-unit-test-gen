@@ -59,10 +59,16 @@ class TestStats:
     tokens_used: int = 0
     cost_usd: float = 0.0
     errors: List[str] = None
+    auto_fixes: Dict[str, int] = None  # Track which fixes were applied and how many times
+    warnings: Dict[str, int] = None    # Track warnings found
 
     def __post_init__(self):
         if self.errors is None:
             self.errors = []
+        if self.auto_fixes is None:
+            self.auto_fixes = {}
+        if self.warnings is None:
+            self.warnings = {}
 
 
 class DotNetAnalyzer:
@@ -317,6 +323,77 @@ Generate ONLY the complete test class code, no explanations."""
         # If no code blocks, return as-is
         return response.strip()
 
+    def auto_fix_common_errors(self, code: str, class_info: ClassInfo) -> tuple[str, list[str], list[str]]:
+        """Detect and auto-fix common errors in generated tests
+
+        Returns: (fixed_code, fixes_applied, warnings)
+        """
+        fixes_applied = []
+
+        # 1. Check for missing using statements
+        missing_usings = []
+
+        # Check if IWebHostEnvironment is used but not imported
+        if 'IWebHostEnvironment' in code and 'using Microsoft.AspNetCore.Hosting;' not in code:
+            missing_usings.append('using Microsoft.AspNetCore.Hosting;')
+            fixes_applied.append("Added missing using: Microsoft.AspNetCore.Hosting")
+
+        # Check if IHubContext is used but not imported
+        if 'IHubContext' in code and 'using Microsoft.AspNetCore.SignalR;' not in code:
+            missing_usings.append('using Microsoft.AspNetCore.SignalR;')
+            fixes_applied.append("Added missing using: Microsoft.AspNetCore.SignalR")
+
+        # Check if IConfiguration is used but not imported
+        if 'IConfiguration' in code and 'using Microsoft.Extensions.Configuration;' not in code:
+            missing_usings.append('using Microsoft.Extensions.Configuration;')
+            fixes_applied.append("Added missing using: Microsoft.Extensions.Configuration")
+
+        # Check if IServiceProvider is used but not imported
+        if 'IServiceProvider' in code and 'using System;' not in code:
+            missing_usings.append('using System;')
+            fixes_applied.append("Added missing using: System (for IServiceProvider)")
+
+        # Insert missing usings after the first using statement
+        if missing_usings:
+            # Find the first using statement
+            first_using_match = re.search(r'^using ', code, re.MULTILINE)
+            if first_using_match:
+                insert_pos = first_using_match.start()
+                code = code[:insert_pos] + '\n'.join(missing_usings) + '\n' + code[insert_pos:]
+
+        # 2. Detect common type mismatches and warn
+        warnings = []
+
+        # Check for PagedResult vs DataPagedResult
+        if 'PagedResult<' in code and class_info.is_controller:
+            warnings.append("⚠️  PagedResult might need to be DataPagedResult (check repository return types)")
+
+        # Check for potential enum issues
+        enum_pattern = r'(\w+Type|\w+Status)\.(\w+)'
+        enum_matches = re.findall(enum_pattern, code)
+        if enum_matches:
+            for enum_type, enum_value in enum_matches:
+                warnings.append(f"⚠️  Verify enum value: {enum_type}.{enum_value}")
+
+        # Check for Dictionary return types in mocks
+        if 'Dictionary<' in code and '.ReturnsAsync' in code:
+            warnings.append("⚠️  Dictionary return type in mock - verify against actual method signature")
+
+        # Add warnings as comments at the top if any
+        if warnings:
+            warning_block = "// AUTO-GENERATED TEST - REVIEW WARNINGS:\n"
+            for warning in warnings:
+                warning_block += f"// {warning}\n"
+            warning_block += "//\n"
+
+            # Insert after namespace declaration
+            namespace_match = re.search(r'(namespace .*\n\{)', code, re.MULTILINE)
+            if namespace_match:
+                insert_pos = namespace_match.end()
+                code = code[:insert_pos] + '\n' + warning_block + code[insert_pos:]
+
+        return code, fixes_applied, warnings
+
     def generate_tests_for_class(self, class_info: ClassInfo) -> Optional[str]:
         """Generate tests for a single class"""
         try:
@@ -332,6 +409,22 @@ Generate ONLY the complete test class code, no explanations."""
 
             # Extract code
             test_code = self.extract_code_block(response)
+
+            # Auto-fix common errors
+            test_code, fixes, warnings = self.auto_fix_common_errors(test_code, class_info)
+
+            # Track fixes and warnings in stats
+            for fix in fixes:
+                fix_key = fix.split(':')[0] if ':' in fix else fix
+                self.stats.auto_fixes[fix_key] = self.stats.auto_fixes.get(fix_key, 0) + 1
+
+            for warning in warnings:
+                warning_key = warning.split('-')[0].strip() if '-' in warning else warning
+                self.stats.warnings[warning_key] = self.stats.warnings.get(warning_key, 0) + 1
+
+            # Log fixes if any were applied
+            if fixes:
+                console.print(f"[green]  ✓ Auto-fixed: {', '.join(fixes)}[/green]")
 
             return test_code
 
@@ -480,6 +573,19 @@ def main(project_dir: Path, output_dir: Optional[Path], dry_run: bool, force: bo
         summary_table.add_row("Errors", str(len(stats.errors)), style="red")
 
     console.print(summary_table)
+
+    # Show auto-fixes applied
+    if stats.auto_fixes:
+        console.print("\n[green]✓ Auto-Fixes Applied:[/green]")
+        for fix_type, count in sorted(stats.auto_fixes.items(), key=lambda x: x[1], reverse=True):
+            console.print(f"  • {fix_type}: {count} file(s)")
+
+    # Show warnings found
+    if stats.warnings:
+        console.print("\n[yellow]⚠️  Warnings (Review These):[/yellow]")
+        for warning_type, count in sorted(stats.warnings.items(), key=lambda x: x[1], reverse=True):
+            console.print(f"  • {warning_type}: {count} file(s)")
+        console.print("\n[dim]Warnings are embedded as comments in generated files for easy review[/dim]")
 
     if stats.errors:
         console.print("\n[red]Errors:[/red]")
