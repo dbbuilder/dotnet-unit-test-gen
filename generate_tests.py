@@ -8,9 +8,10 @@ import os
 import sys
 import re
 import json
+import hashlib
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 
 import click
@@ -48,6 +49,108 @@ class ClassInfo:
     dependencies: List[str]
     is_controller: bool
     is_service: bool
+
+
+@dataclass
+class ProjectPattern:
+    """A learned pattern for a specific project"""
+    pattern_type: str  # 'return_type', 'enum_value', 'property_name', etc.
+    context: str  # 'IDeviceRepository.GetUserDevicesAsync', 'ConnectionType', etc.
+    value: str  # 'DataPagedResult<DeviceDto>', 'P2P,Relay,Direct', etc.
+    confidence: float = 1.0  # How confident we are (based on frequency)
+    last_seen: str = field(default_factory=lambda: datetime.now().isoformat())
+
+
+class ProjectPatternCache:
+    """Caches learned patterns for a specific project"""
+
+    def __init__(self, project_dir: Path):
+        self.project_dir = project_dir
+        # Create cache directory in tool location
+        cache_root = Path(__file__).parent / ".test-gen-cache"
+        cache_root.mkdir(exist_ok=True)
+
+        # Hash project path for unique cache key
+        project_hash = hashlib.md5(str(project_dir.absolute()).encode()).hexdigest()[:12]
+        self.cache_dir = cache_root / project_hash
+        self.cache_dir.mkdir(exist_ok=True)
+
+        # Store project info
+        self.info_file = self.cache_dir / "project-info.json"
+        self.patterns_file = self.cache_dir / "patterns.json"
+
+        self._save_project_info()
+        self.patterns: List[ProjectPattern] = self._load_patterns()
+
+    def _save_project_info(self):
+        """Save project metadata"""
+        info = {
+            "project_path": str(self.project_dir.absolute()),
+            "project_name": self.project_dir.name,
+            "last_updated": datetime.now().isoformat()
+        }
+        self.info_file.write_text(json.dumps(info, indent=2))
+
+    def _load_patterns(self) -> List[ProjectPattern]:
+        """Load cached patterns"""
+        if not self.patterns_file.exists():
+            return []
+
+        try:
+            data = json.loads(self.patterns_file.read_text())
+            return [ProjectPattern(**p) for p in data]
+        except:
+            return []
+
+    def save_patterns(self):
+        """Save patterns to cache"""
+        data = [
+            {
+                "pattern_type": p.pattern_type,
+                "context": p.context,
+                "value": p.value,
+                "confidence": p.confidence,
+                "last_seen": p.last_seen
+            }
+            for p in self.patterns
+        ]
+        self.patterns_file.write_text(json.dumps(data, indent=2))
+
+    def add_pattern(self, pattern_type: str, context: str, value: str):
+        """Add or update a pattern"""
+        # Check if pattern exists
+        for p in self.patterns:
+            if p.pattern_type == pattern_type and p.context == context:
+                p.value = value
+                p.last_seen = datetime.now().isoformat()
+                p.confidence = min(1.0, p.confidence + 0.1)  # Increase confidence
+                self.save_patterns()
+                return
+
+        # Add new pattern
+        self.patterns.append(ProjectPattern(pattern_type, context, value))
+        self.save_patterns()
+
+    def get_context_string(self) -> str:
+        """Get patterns as a string for AI prompt"""
+        if not self.patterns:
+            return ""
+
+        lines = ["\n**Project-Specific Patterns (Learned from Previous Runs):**"]
+        lines.append("```")
+
+        # Group by type
+        by_type = {}
+        for p in self.patterns:
+            by_type.setdefault(p.pattern_type, []).append(p)
+
+        for pattern_type, patterns in by_type.items():
+            lines.append(f"\n// {pattern_type.replace('_', ' ').title()}:")
+            for p in patterns:
+                lines.append(f"// {p.context} → {p.value}")
+
+        lines.append("```\n")
+        return "\n".join(lines)
 
 
 @dataclass
@@ -152,9 +255,10 @@ class DotNetAnalyzer:
 class TestGenerator:
     """Generates unit tests using LiteLLM"""
 
-    def __init__(self, stats: TestStats, project_dir: Path = None):
+    def __init__(self, stats: TestStats, project_dir: Path = None, pattern_cache: ProjectPatternCache = None):
         self.stats = stats
         self.project_dir = project_dir
+        self.pattern_cache = pattern_cache
         self.dto_cache = {}  # Cache discovered DTOs
         # Configure LiteLLM
         litellm.set_verbose = False
@@ -211,6 +315,62 @@ class TestGenerator:
 
         return ""
 
+    def find_related_enums(self, class_info: ClassInfo) -> str:
+        """Find enums referenced in the class and return their definitions"""
+        if not self.project_dir:
+            return ""
+
+        # Extract enum type names from source code
+        # Common patterns: SomethingType, SomethingStatus, SomethingMode, etc.
+        enum_pattern = r'\b(\w+(?:Type|Status|Mode|State|Level|Kind))\b'
+        enum_names = set(re.findall(enum_pattern, class_info.source_code))
+
+        if not enum_names:
+            return ""
+
+        enum_definitions = []
+
+        # Search for enum files in common locations
+        search_paths = [
+            self.project_dir.parent / "RemoteC.Shared" / "Models",
+            self.project_dir.parent / "RemoteC.Shared" / "Enums",
+            self.project_dir / "Models",
+            self.project_dir / "Enums",
+        ]
+
+        for search_path in search_paths:
+            if not search_path.exists():
+                continue
+
+            for cs_file in search_path.rglob("*.cs"):
+                if cs_file.name in self.dto_cache:  # Reuse cache
+                    content = self.dto_cache[cs_file.name]
+                else:
+                    try:
+                        content = cs_file.read_text(encoding='utf-8', errors='ignore')
+                        self.dto_cache[cs_file.name] = content
+                    except:
+                        continue
+
+                # Extract matching enum definitions
+                for enum_name in enum_names:
+                    # Match: public enum EnumName { Value1, Value2, ... }
+                    pattern = rf'public\s+enum\s+{enum_name}\s*{{[^}}]*}}'
+                    matches = re.findall(pattern, content, re.DOTALL)
+                    if matches:
+                        enum_def = matches[0]
+                        # Clean up whitespace for readability
+                        enum_def = re.sub(r'\s+', ' ', enum_def)
+                        enum_def = re.sub(r'\s*{\s*', ' { ', enum_def)
+                        enum_def = re.sub(r'\s*}\s*', ' }', enum_def)
+                        if len(enum_def) < 500:  # Limit size
+                            enum_definitions.append(f"// {enum_name} definition\n{enum_def}")
+
+        if enum_definitions:
+            return "\n\n**Related Enums:**\n```csharp\n" + "\n\n".join(enum_definitions[:5]) + "\n```\n"
+
+        return ""
+
     def generate_test_prompt(self, class_info: ClassInfo, framework: str = "xunit") -> str:
         """Generate the prompt for test generation"""
 
@@ -220,8 +380,12 @@ class TestGenerator:
         if len(source) > max_source_len:
             source = source[:max_source_len] + "\n// ... (truncated)"
 
-        # Find related DTOs
+        # Find related DTOs and Enums
         dto_context = self.find_related_dtos(class_info)
+        enum_context = self.find_related_enums(class_info)
+
+        # Get project-specific patterns (if available)
+        pattern_context = self.pattern_cache.get_context_string() if self.pattern_cache else ""
 
         prompt = f"""You are an expert .NET test engineer. Generate comprehensive unit tests for the following C# class.
 
@@ -229,7 +393,7 @@ class TestGenerator:
 ```csharp
 {source}
 ```
-{dto_context}
+{dto_context}{enum_context}{pattern_context}
 **Requirements:**
 1. Use {framework.upper()} testing framework
 2. Use Moq for mocking dependencies: {', '.join(class_info.dependencies) if class_info.dependencies else 'None'}
@@ -459,7 +623,12 @@ def main(project_dir: Path, output_dir: Optional[Path], dry_run: bool, force: bo
     # Initialize
     analyzer = DotNetAnalyzer(project_dir)
     stats = TestStats()
-    generator = TestGenerator(stats, project_dir)
+    pattern_cache = ProjectPatternCache(project_dir)
+    generator = TestGenerator(stats, project_dir, pattern_cache)
+
+    # Show if we're using cached patterns
+    if pattern_cache.patterns:
+        console.print(f"[cyan]📚 Loaded {len(pattern_cache.patterns)} cached pattern(s) from previous runs[/cyan]")
 
     # Find C# files
     console.print(f"\n[cyan]📁 Scanning {project_dir}...[/cyan]")
