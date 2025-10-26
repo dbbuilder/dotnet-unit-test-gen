@@ -303,10 +303,14 @@ class TestGenerationOrchestrator:
             console.print(f"\n... and {len(source_files) - 20} more files")
 
         # Estimate cost
-        avg_tokens = 150000  # Average for test generation
+        # Based on RemoteC case study: 44 files = $1.73 = ~$0.0375/file
+        # At gpt-4o-mini pricing ($0.00015 input, $0.0006 output per 1K tokens):
+        # ~50,000 input + 50,000 output tokens per file = 100,000 total
+        avg_input_tokens = 50000   # Average input tokens per test
+        avg_output_tokens = 50000  # Average output tokens per test
         estimated_cost = self.provider.estimate_cost(
-            avg_tokens // 2,  # Input
-            avg_tokens // 2   # Output
+            avg_input_tokens,
+            avg_output_tokens
         ) * len(source_files)
 
         console.print(f"\n[bold]Estimated Cost:[/bold] [green]${estimated_cost:.2f}[/green]")
