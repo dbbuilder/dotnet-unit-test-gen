@@ -2,6 +2,7 @@
 Vue.js Language Handler
 
 Provides Vue.js-specific parsing and test generation with Vitest
+Supports both Vue 2 and Vue 3 with automatic version detection
 """
 
 import re
@@ -21,13 +22,74 @@ class VueJSLanguageHandler(BaseLanguageHandler):
     Vue.js language handler with Vitest support
 
     Supports:
+    - Vue 2 and Vue 3 (auto-detected from package.json)
     - Vue 3 Composition API and Options API
     - TypeScript and JavaScript
     - Vitest + Vue Test Utils
     - Component props, emits, and slots testing
     - Composable testing
-    - Pinia store testing
+    - Pinia store testing (Vue 3)
+    - Vuex store testing (Vue 2/3)
     """
+
+    def __init__(self):
+        super().__init__()
+        self._vue_version = None
+        self._project_dir = None
+
+    def _detect_vue_version(self, project_dir: Path) -> int:
+        """
+        Detect Vue version from package.json
+
+        Args:
+            project_dir: Project directory to search
+
+        Returns:
+            2 or 3 (Vue major version)
+        """
+        # Cache the version per project
+        if self._project_dir == project_dir and self._vue_version is not None:
+            return self._vue_version
+
+        self._project_dir = project_dir
+
+        # Look for package.json
+        package_json = project_dir / 'package.json'
+        if not package_json.exists():
+            # Try parent directories
+            for parent in project_dir.parents:
+                package_json = parent / 'package.json'
+                if package_json.exists():
+                    break
+            else:
+                # Default to Vue 3 if no package.json found
+                self._vue_version = 3
+                return 3
+
+        try:
+            with open(package_json, 'r', encoding='utf-8') as f:
+                pkg_data = json.load(f)
+
+            # Check dependencies and devDependencies
+            deps = pkg_data.get('dependencies', {})
+            dev_deps = pkg_data.get('devDependencies', {})
+
+            vue_version = deps.get('vue') or dev_deps.get('vue')
+
+            if vue_version:
+                # Extract major version (e.g., "^2.7.16" -> 2, "^3.2.0" -> 3)
+                match = re.search(r'[^\d]*(\d+)', vue_version)
+                if match:
+                    major_version = int(match.group(1))
+                    self._vue_version = major_version
+                    return major_version
+
+        except Exception as e:
+            print(f"Warning: Could not detect Vue version from package.json: {e}")
+
+        # Default to Vue 3
+        self._vue_version = 3
+        return 3
 
     def get_file_extensions(self) -> List[str]:
         """Return Vue.js file extensions"""
