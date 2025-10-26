@@ -34,6 +34,7 @@ class ClassInfo:
     interfaces: List[str] = field(default_factory=list)
     is_controller: bool = False
     is_service: bool = False
+    language: str = 'csharp'  # csharp, vbnet, vuejs, tsql, etc.
     metadata: Dict[str, Any] = field(default_factory=dict)  # Language-specific metadata
 
 

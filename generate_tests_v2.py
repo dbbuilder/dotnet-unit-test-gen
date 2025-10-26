@@ -19,6 +19,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 from core.orchestrator import TestGenerationOrchestrator
 from providers.provider_factory import ProviderFactory
 from languages.csharp_language import CSharpLanguageHandler
+from languages.vbnet_language import VBNetLanguageHandler
+from languages.vuejs_language import VueJSLanguageHandler
+from languages.tsql_language import TSQLLanguageHandler
 from patterns.pattern_cache import ProjectPatternCache
 
 console = Console()
@@ -44,9 +47,15 @@ console = Console()
 )
 @click.option(
     '--language',
-    type=click.Choice(['csharp', 'vbnet'], case_sensitive=False),
+    type=click.Choice(['csharp', 'vbnet', 'vuejs', 'tsql'], case_sensitive=False),
     default='csharp',
     help='Source language (default: csharp)'
+)
+@click.option(
+    '--test-framework',
+    type=click.Choice(['xunit', 'nunit', 'mstest'], case_sensitive=False),
+    default='xunit',
+    help='Test framework to use (default: xunit)'
 )
 @click.option(
     '-p', '--pattern',
@@ -79,6 +88,7 @@ def main(
     provider: str,
     model: Optional[str],
     language: str,
+    test_framework: str,
     pattern: Optional[str],
     force: bool,
     dry_run: bool,
@@ -147,9 +157,18 @@ def main(
     # Create language handler
     if language == 'csharp':
         language_handler = CSharpLanguageHandler()
+    elif language == 'vbnet':
+        language_handler = VBNetLanguageHandler()
+    elif language == 'vuejs':
+        language_handler = VueJSLanguageHandler()
+    elif language == 'tsql':
+        language_handler = TSQLLanguageHandler()
     else:
         console.print(f"[red]✗ Unsupported language:[/red] {language}")
         sys.exit(1)
+
+    console.print(f"[green]✓[/green] Language: [cyan]{language.upper()}[/cyan]")
+    console.print(f"[green]✓[/green] Test Framework: [cyan]{test_framework.upper()}[/cyan]")
 
     # Create pattern cache
     pattern_cache = ProjectPatternCache(project_dir)
