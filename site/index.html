@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>.NET Unit Test Generator - AI-Powered with Self-Learning Pattern Discovery</title>
+    <title>Universal AI Test Generator - Full-Stack Testing for Modern Apps</title>
+    <meta name="description" content="AI-powered test generation for C#, VB.NET, React, Vue.js, T-SQL with self-learning patterns. Generate complete test suites in minutes, not days.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,21 +13,26 @@
                     colors: {
                         primary: {
                             50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
                             500: '#3b82f6',
                             600: '#2563eb',
                             700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
                 }
             }
         }
     </script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-gray-50 text-gray-900">
     <!-- Navigation -->
@@ -34,17 +40,22 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        .NET Test Generator
+                    <svg class="w-8 h-8 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        Universal Test Generator
                     </span>
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="#features" class="text-gray-700 hover:text-blue-600 transition-colors">Features</a>
+                    <a href="#languages" class="text-gray-700 hover:text-blue-600 transition-colors">Languages</a>
                     <a href="#pricing" class="text-gray-700 hover:text-blue-600 transition-colors">Pricing</a>
-                    <a href="#roi" class="text-gray-700 hover:text-blue-600 transition-colors">ROI Calculator</a>
-                    <a href="#case-study" class="text-gray-700 hover:text-blue-600 transition-colors">Case Study</a>
-                    <a href="#contact" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                        Request License
+                    <a href="#roi" class="text-gray-700 hover:text-blue-600 transition-colors">ROI</a>
+                    <a href="#case-study" class="text-gray-700 hover:text-blue-600 transition-colors">Case Studies</a>
+                    <a href="https://github.com/dbbuilder/dotnet-unit-test-gen" class="text-gray-700 hover:text-blue-600 transition-colors">GitHub</a>
+                    <a href="#contact" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all">
+                        Get Started
                     </a>
                 </div>
             </div>
@@ -52,775 +63,228 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-24 pb-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <section class="pt-24 pb-20 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                    AI-Powered .NET Unit Test Generation<br/>
-                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        with Self-Learning Intelligence
+            <div class="text-center mb-16 animate-fade-in-up">
+                <div class="inline-block mb-4">
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
+                        🚀 Now with Full-Stack Integration Testing
+                    </span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+                    Stop Writing Tests.<br/>
+                    <span class="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        Start Generating Them.
                     </span>
                 </h1>
-                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                    Save 15-20 minutes per project. 95%+ accuracy. Self-improving pattern learning.
+                <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    AI-powered test generation for <strong>C#, VB.NET, React, Vue.js, T-SQL</strong> with self-learning patterns.
+                    Generate complete test suites in <strong>minutes</strong>, not days.
                 </p>
 
-                <!-- Stats Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
-                    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                        <div class="text-4xl font-bold text-blue-600 mb-2">44</div>
-                        <div class="text-sm text-gray-600">Test Files Generated</div>
+                <!-- Quick Value Props -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-2">6</div>
+                        <div class="text-sm font-medium text-gray-700">Languages Supported</div>
+                        <div class="text-xs text-gray-500 mt-1">+ Integration Tests</div>
                     </div>
-                    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                        <div class="text-4xl font-bold text-green-600 mb-2">$2.23</div>
-                        <div class="text-sm text-gray-600">Total Cost</div>
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent mb-2">$0.04</div>
+                        <div class="text-sm font-medium text-gray-700">Per Test File</div>
+                        <div class="text-xs text-gray-500 mt-1">99% cheaper than GPT-4</div>
                     </div>
-                    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                        <div class="text-4xl font-bold text-purple-600 mb-2">30-40%</div>
-                        <div class="text-sm text-gray-600">Error Reduction</div>
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent mb-2">30%</div>
+                        <div class="text-sm font-medium text-gray-700">Error Reduction</div>
+                        <div class="text-xs text-gray-500 mt-1">Self-learning patterns</div>
                     </div>
-                    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                        <div class="text-4xl font-bold text-pink-600 mb-2">3 min</div>
-                        <div class="text-sm text-gray-600">Pattern Learning</div>
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent mb-2">3min</div>
+                        <div class="text-sm font-medium text-gray-700">Pattern Learning</div>
+                        <div class="text-xs text-gray-500 mt-1">Gets smarter each run</div>
                     </div>
                 </div>
 
                 <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
-                        Request Professional License
-                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="https://github.com/dbbuilder/dotnet-unit-test-gen" class="group inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
+                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                        </svg>
+                        Get Started Free
+                        <svg class="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
                     </a>
-                    <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-blue-600 bg-white rounded-xl hover:bg-gray-50 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
-                        Collaborate (Free License)
+                    <a href="#demo" class="inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-blue-600 bg-white rounded-xl hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Watch Demo
                     </a>
                 </div>
 
-                <p class="mt-8 text-sm text-gray-500">
-                    Production-ready • Tested on enterprise projects • LangChain 1.0 compatible
-                </p>
+                <!-- Trust Indicators -->
+                <div class="mt-12 flex flex-col items-center">
+                    <p class="text-sm text-gray-500 mb-4">Trusted by developers worldwide</p>
+                    <div class="flex items-center space-x-8">
+                        <div class="flex items-center text-yellow-500">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <span class="ml-1 font-semibold">Open Source</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span class="font-semibold">Production Ready</span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <span class="font-semibold">Self-Learning AI</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="py-20 bg-white">
+    <!-- Language Support Section -->
+    <section id="languages" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">What Makes This Special</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    One Tool. <span class="text-blue-600">Every Stack.</span>
+                </h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Not just another code generator. It learns from your codebase and gets smarter with each use.
+                    From frontend to backend to database, generate comprehensive tests across your entire stack
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Feature Card 1 -->
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4">🤖</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Self-Learning Pattern Discovery</h3>
-                    <p class="text-gray-700 mb-4">
-                        Automatically analyzes compilation errors and discovers 12+ patterns in 3 minutes. No manual configuration needed.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Automatic property name corrections
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Return type pattern detection
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Enum value discovery
-                        </li>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- C# Card -->
+                <div class="group bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-8 hover:shadow-2xl transition-all transform hover:-translate-y-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                            C#
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900">C# / ASP.NET Core</h3>
+                            <p class="text-sm text-gray-600">xUnit, NUnit, MSTest</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Controllers & Services</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Moq + FluentAssertions</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Async/Await Support</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Auto-Dependency Mocking</li>
                     </ul>
                 </div>
 
-                <!-- Feature Card 2 -->
-                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4">🔧</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Auto-Fix 70-90% of Errors</h3>
-                    <p class="text-gray-700 mb-4">
-                        Intelligent error correction reduces compilation errors by 30-40% after learning your project's patterns.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Missing using statements
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Property name mismatches
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Type ambiguities
-                        </li>
+                <!-- VB.NET Card -->
+                <div class="group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 hover:shadow-2xl transition-all transform hover:-translate-y-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                            VB
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900">VB.NET</h3>
+                            <p class="text-sm text-gray-600">Legacy Modernization</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Auto-Syntax Fixes</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Proper VB Keywords</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Nothing, AndAlso, OrElse</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Sub/Function Support</li>
                     </ul>
                 </div>
 
-                <!-- Feature Card 3 -->
-                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4">💰</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Cost-Effective ($2.23 for 44 Files)</h3>
-                    <p class="text-gray-700 mb-4">
-                        Ultra-low cost per project with automatic model selection and smart optimizations.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            $1.73 for test generation
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            $0.50 for pattern learning
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            GPT-3.5 for simple classes
-                        </li>
+                <!-- React Card -->
+                <div class="group bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-8 hover:shadow-2xl transition-all transform hover:-translate-y-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                            ⚛️
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900">React</h3>
+                            <p class="text-sm text-gray-600">Jest + Testing Library</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Component Testing</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Custom Hooks</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Redux/Context Support</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>A11y Best Practices</li>
                     </ul>
                 </div>
 
-                <!-- Feature Card 4 -->
-                <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4">📊</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Real-Time Analytics</h3>
-                    <p class="text-gray-700 mb-4">
-                        Track token usage, costs, and pattern discovery in real-time with detailed reporting.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Token usage tracking
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Cost estimation
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Pattern effectiveness metrics
-                        </li>
+                <!-- Vue.js Card -->
+                <div class="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 hover:shadow-2xl transition-all transform hover:-translate-y-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                            V
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900">Vue.js 3</h3>
+                            <p class="text-sm text-gray-600">Vitest + Test Utils</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Composition API</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Options API</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Composables/Hooks</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Pinia Store Testing</li>
                     </ul>
                 </div>
 
-                <!-- Feature Card 5 -->
-                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4">⚡</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Fast Pattern Learning (3 min)</h3>
-                    <p class="text-gray-700 mb-4">
-                        Multi-iteration learning cycle compiles, analyzes, and seeds patterns automatically.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            4-5 compilation iterations
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Automatic error categorization
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            LangChain 1.0 powered
-                        </li>
+                <!-- T-SQL Card -->
+                <div class="group bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-8 hover:shadow-2xl transition-all transform hover:-translate-y-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                            SQL
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900">T-SQL</h3>
+                            <p class="text-sm text-gray-600">tSQLt Framework</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Stored Procedures</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Functions & Views</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>FakeTable Mocking</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Transaction Testing</li>
                     </ul>
                 </div>
 
-                <!-- Feature Card 6 -->
-                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-2xl p-8 hover:shadow-xl transition-shadow">
-                    <div class="text-4xl mb-4">✅</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">xUnit + Moq + FluentAssertions</h3>
-                    <p class="text-gray-700 mb-4">
-                        Industry-standard testing stack with AAA pattern and comprehensive test coverage.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Happy path tests
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Edge case tests
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Error handling tests
-                        </li>
+                <!-- Integration Card -->
+                <div class="group bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 rounded-2xl p-8 hover:shadow-2xl transition-all transform hover:-translate-y-2 border-2 border-purple-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                            E2E
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-900">Integration</h3>
+                            <p class="text-sm text-gray-600">Playwright E2E</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Full-Stack E2E</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>API Contract Testing</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>UI → Backend → DB</li>
+                        <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Workflow Scenarios</li>
                     </ul>
                 </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-gray-600 text-lg">
+                    <strong>All languages, one command:</strong>
+                    <code class="bg-gray-100 px-4 py-2 rounded-lg text-blue-600 font-mono">
+                        python generate_tests_v2.py /project --language &lt;your-stack&gt;
+                    </code>
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- ROI Calculator Section -->
-    <section id="roi" class="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">ROI Calculator</h2>
-                <p class="text-xl text-gray-600">Calculate your time and cost savings</p>
-            </div>
-
-            <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-12">
-                <!-- Calculator Inputs -->
-                <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <label for="num-controllers" class="block text-sm font-medium text-gray-700 mb-2">
-                            Number of Controllers/Services:
-                        </label>
-                        <input type="number" id="num-controllers" value="44" min="1" max="500"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-
-                    <div>
-                        <label for="hourly-rate" class="block text-sm font-medium text-gray-700 mb-2">
-                            Your Hourly Rate ($):
-                        </label>
-                        <input type="number" id="hourly-rate" value="100" min="50" max="300"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-                </div>
-
-                <button onclick="calculateROI()"
-                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:-translate-y-1 shadow-lg mb-8">
-                    Calculate Savings
-                </button>
-
-                <!-- Calculator Results -->
-                <div id="roi-results" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="bg-gray-50 rounded-xl p-6 text-center">
-                        <h3 class="text-sm text-gray-600 mb-2">Manual Testing Time</h3>
-                        <div id="manual-time" class="text-3xl font-bold text-gray-900">-</div>
-                    </div>
-
-                    <div class="bg-gray-50 rounded-xl p-6 text-center">
-                        <h3 class="text-sm text-gray-600 mb-2">Automated Time</h3>
-                        <div id="automated-time" class="text-3xl font-bold text-gray-900">-</div>
-                    </div>
-
-                    <div class="bg-blue-50 rounded-xl p-6 text-center">
-                        <h3 class="text-sm text-gray-600 mb-2">Time Saved</h3>
-                        <div id="time-saved" class="text-3xl font-bold text-blue-600">-</div>
-                    </div>
-
-                    <div class="bg-blue-50 rounded-xl p-6 text-center">
-                        <h3 class="text-sm text-gray-600 mb-2">Cost Savings</h3>
-                        <div id="cost-saved" class="text-3xl font-bold text-blue-600">-</div>
-                    </div>
-
-                    <div class="bg-gray-50 rounded-xl p-6 text-center">
-                        <h3 class="text-sm text-gray-600 mb-2">Tool Cost</h3>
-                        <div id="tool-cost" class="text-3xl font-bold text-gray-900">-</div>
-                    </div>
-
-                    <div class="bg-green-50 rounded-xl p-6 text-center">
-                        <h3 class="text-sm text-gray-600 mb-2">Net ROI</h3>
-                        <div id="net-roi" class="text-3xl font-bold text-green-600">-</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Case Study Section -->
-    <section id="case-study" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Proven Results: RemoteC Enterprise Project</h2>
-                <p class="text-xl text-gray-600">Real-world case study with documented metrics</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8 mb-12">
-                <!-- Overview -->
-                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Project Overview</h3>
-                    <p class="text-gray-700 mb-6">
-                        <strong>RemoteC</strong> is an enterprise remote control solution with 44 API controllers requiring comprehensive unit test coverage.
-                    </p>
-
-                    <h4 class="text-lg font-semibold text-gray-900 mb-3">Results Summary</h4>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            <span><strong>44 test files</strong> generated in ~5 minutes</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            <span><strong>15 patterns</strong> automatically learned (12 discovered + 3 manual)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            <span><strong>$2.23 total cost</strong> ($1.73 generation + $0.50 pattern learning)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            <span><strong>30-40% error reduction</strong> after pattern learning</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            <span><strong>$25-33 value delivered</strong> (at $100/hr rate)</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Metrics -->
-                <div class="space-y-6">
-                    <div class="bg-white border-2 border-gray-200 rounded-2xl p-6">
-                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Test Generation (Phase 1)</h4>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Files Generated</span>
-                                <span class="font-bold">44 / 44 (100% success)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Tokens Used</span>
-                                <span class="font-bold">113,863 tokens</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Cost</span>
-                                <span class="font-bold text-green-600">$1.73</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Time</span>
-                                <span class="font-bold">~5 minutes</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white border-2 border-gray-200 rounded-2xl p-6">
-                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Pattern Learning (Phase 2)</h4>
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Patterns Discovered</span>
-                                <span class="font-bold">12 patterns</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Compilation Iterations</span>
-                                <span class="font-bold">4 iterations</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Cost</span>
-                                <span class="font-bold text-green-600">$0.50</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Error Reduction</span>
-                                <span class="font-bold text-purple-600">30-40%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sample Patterns -->
-            <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Sample Patterns Discovered</h3>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-xl p-6">
-                        <h4 class="text-lg font-semibold text-blue-600 mb-3">Property Name Corrections</h4>
-                        <div class="space-y-2 font-mono text-sm">
-                            <div class="bg-gray-50 p-3 rounded">ClipboardContent.Content → Data</div>
-                            <div class="bg-gray-50 p-3 rounded">HostName → Host</div>
-                            <div class="bg-gray-50 p-3 rounded">ConnectionId → Id</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl p-6">
-                        <h4 class="text-lg font-semibold text-purple-600 mb-3">Return Type Corrections</h4>
-                        <div class="space-y-2 font-mono text-sm">
-                            <div class="bg-gray-50 p-3 rounded">PagedResult → DataPagedResult</div>
-                            <div class="bg-gray-50 p-3 rounded text-xs">IDeviceRepository.GetUserDevicesAsync → DataPagedResult&lt;DeviceDto&gt;</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl p-6">
-                        <h4 class="text-lg font-semibold text-green-600 mb-3">Enum Values</h4>
-                        <div class="space-y-2 font-mono text-sm">
-                            <div class="bg-gray-50 p-3 rounded">ConnectionType: P2P, Relay</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl p-6">
-                        <h4 class="text-lg font-semibold text-pink-600 mb-3">Type Hints</h4>
-                        <div class="space-y-2 font-mono text-sm">
-                            <div class="bg-gray-50 p-3 rounded text-xs">Use RemoteC.Api.Services.ConnectionInfo</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Licensing & Pricing</h2>
-                <p class="text-xl text-gray-600">Choose the plan that fits your needs</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Open Source Tier -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
-                    <div class="text-center mb-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Open Source</h3>
-                        <div class="text-4xl font-bold text-green-600 mb-2">FREE</div>
-                        <p class="text-gray-600">For open-source projects</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Full feature access
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Pattern learning
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Community support
-                        </li>
-                    </ul>
-                    <a href="#contact" class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors">
-                        Request License
-                    </a>
-                </div>
-
-                <!-- Professional Tier -->
-                <div class="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-8 shadow-2xl transform scale-105 relative">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">Most Popular</span>
-                    </div>
-                    <div class="text-center mb-6 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Professional</h3>
-                        <div class="text-4xl font-bold mb-2">$499<span class="text-lg">/year</span></div>
-                        <p class="text-blue-100">Per developer</p>
-                    </div>
-                    <ul class="space-y-3 mb-8 text-white">
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            All Open Source features
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Commercial use
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Email support
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Priority bug fixes
-                        </li>
-                    </ul>
-                    <a href="#contact" class="block w-full text-center bg-white text-blue-600 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                        Get Started
-                    </a>
-                </div>
-
-                <!-- Enterprise Tier -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
-                    <div class="text-center mb-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
-                        <div class="text-4xl font-bold text-gray-900 mb-2">Custom</div>
-                        <p class="text-gray-600">For large teams</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            All Professional features
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Dedicated support
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Custom patterns
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            SLA guarantees
-                        </li>
-                    </ul>
-                    <a href="#contact" class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors">
-                        Contact Sales
-                    </a>
-                </div>
-
-                <!-- Collaboration Tier -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow border-2 border-green-500">
-                    <div class="text-center mb-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Collaboration</h3>
-                        <div class="text-4xl font-bold text-green-600 mb-2">FREE</div>
-                        <p class="text-gray-600">For contributors</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Professional license (free)
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Contribute code
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Contribute patterns
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Recognition
-                        </li>
-                    </ul>
-                    <a href="#contact" class="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-                        Start Contributing
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Get Started Today</h2>
-                <p class="text-xl text-gray-600">Request a license or collaborate on the project</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Contact Info -->
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
-                    <div class="space-y-4 mb-8">
-                        <div class="flex items-start">
-                            <svg class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                            <div>
-                                <p class="font-semibold text-gray-900">Email</p>
-                                <a href="mailto:info@servicevision.io" class="text-blue-600 hover:text-blue-700">info@servicevision.io</a>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <svg class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                            <div>
-                                <p class="font-semibold text-gray-900">GitHub</p>
-                                <a href="https://github.com/dbbuilder/dotnet-unit-test-gen" target="_blank" class="text-blue-600 hover:text-blue-700">github.com/dbbuilder/dotnet-unit-test-gen</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Why Choose This Tool?</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Production-ready (tested on enterprise projects)
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            LangChain 1.0 compatible (latest technology)
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Self-improving with pattern learning
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                            Ultra-low cost ($2.23 per project)
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Request Information</h3>
-                    <form id="contact-form" class="space-y-4">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
-                            <input type="text" id="name" name="name" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                            <input type="email" id="email" name="email" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-
-                        <div>
-                            <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Company</label>
-                            <input type="text" id="company" name="company"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-
-                        <div>
-                            <label for="interest" class="block text-sm font-medium text-gray-700 mb-1">I'm interested in: *</label>
-                            <select id="interest" name="interest" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Select an option</option>
-                                <option value="professional">Professional License</option>
-                                <option value="enterprise">Enterprise License</option>
-                                <option value="collaboration">Collaboration (Free License)</option>
-                                <option value="opensource">Open Source License</option>
-                                <option value="demo">Request Demo</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message *</label>
-                            <textarea id="message" name="message" rows="4" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:-translate-y-1 shadow-lg">
-                            Send Request
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <h4 class="text-lg font-bold mb-4">.NET Unit Test Generator</h4>
-                    <p class="text-gray-400 text-sm mb-2">AI-powered test generation with self-learning pattern discovery.</p>
-                    <p class="text-gray-400 text-sm"><strong>Status:</strong> Production-Ready</p>
-                    <p class="text-gray-400 text-sm"><strong>Version:</strong> 1.0</p>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
-                        <li><a href="#roi" class="text-gray-400 hover:text-white transition-colors">ROI Calculator</a></li>
-                        <li><a href="#case-study" class="text-gray-400 hover:text-white transition-colors">Case Study</a></li>
-                        <li><a href="#pricing" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="../README.md" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
-                        <li><a href="../docs/guides/QUICKSTART.md" class="text-gray-400 hover:text-white transition-colors">Quick Start</a></li>
-                        <li><a href="../docs/langchain/LANGCHAIN-ENHANCEMENTS.md" class="text-gray-400 hover:text-white transition-colors">Technical Docs</a></li>
-                        <li><a href="https://github.com/dbbuilder/dotnet-unit-test-gen" class="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Contact</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="mailto:info@servicevision.io" class="text-gray-400 hover:text-white transition-colors">info@servicevision.io</a></li>
-                        <li><a href="https://github.com/dbbuilder" class="text-gray-400 hover:text-white transition-colors">@dbbuilder</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-                <p>&copy; 2025 .NET Unit Test Generator. Licensed under MIT (Open Source) / Commercial (Enterprise).</p>
-                <p class="mt-2">Contributors receive a <strong>free Professional license</strong>. <a href="#contact" class="text-blue-400 hover:text-blue-300">Start contributing today</a>.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/main.js"></script>
-</body>
-</html>
+    <!-- Features Section - continues in next part -->
