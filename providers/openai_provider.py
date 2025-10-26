@@ -25,6 +25,7 @@ class OpenAIProvider(BaseAIProvider):
     OpenAI provider using LiteLLM
 
     Supports:
+    - GPT-4o mini (gpt-4o-mini) - RECOMMENDED (best quality/cost balance)
     - GPT-4 Turbo (gpt-4-turbo-preview)
     - GPT-4 (gpt-4)
     - GPT-3.5 Turbo (gpt-3.5-turbo)
@@ -37,6 +38,8 @@ class OpenAIProvider(BaseAIProvider):
 
     # Pricing as of October 2025 (per 1K tokens)
     PRICING = {
+        "gpt-4o-mini": {"input": 0.00015, "output": 0.0006},  # RECOMMENDED
+        "gpt-4o": {"input": 0.0025, "output": 0.01},
         "gpt-4-turbo-preview": {"input": 0.01, "output": 0.03},
         "gpt-4-turbo": {"input": 0.01, "output": 0.03},
         "gpt-4": {"input": 0.03, "output": 0.06},
@@ -188,8 +191,8 @@ class OpenAIProvider(BaseAIProvider):
         return f"OpenAI {self.model}"
 
     def get_default_model(self) -> str:
-        """Return default model"""
-        return "gpt-4-turbo-preview"
+        """Return default model (GPT-4o mini - best quality/cost balance)"""
+        return "gpt-4o-mini"
 
     def get_cost_per_1k_input(self) -> float:
         """Return cost per 1K input tokens for current model"""
@@ -214,16 +217,21 @@ class OpenAIProvider(BaseAIProvider):
             model: Model name
 
         Returns:
-            True if GPT-3.5 Turbo
+            True if GPT-4o mini or GPT-3.5 Turbo
         """
-        return "gpt-3.5-turbo" in model.lower()
+        return "gpt-4o-mini" in model.lower() or "gpt-3.5-turbo" in model.lower()
 
     @staticmethod
     def get_simple_model() -> str:
         """Return simple/cheap model for basic tasks"""
-        return "gpt-3.5-turbo"
+        return "gpt-4o-mini"
 
     @staticmethod
     def get_complex_model() -> str:
         """Return complex/powerful model for advanced tasks"""
-        return "gpt-4-turbo-preview"
+        return "gpt-4o"
+
+    @staticmethod
+    def get_recommended_model() -> str:
+        """Return recommended model (best quality/cost balance)"""
+        return "gpt-4o-mini"
