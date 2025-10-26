@@ -1,6 +1,6 @@
-# .NET Unit Test Generator with AI-Powered Pattern Learning
+# Universal AI-Powered Test Generator (v1.2)
 
-AI-powered unit test generator for .NET projects with self-learning pattern discovery and intelligent error correction.
+Multi-language AI test generator with self-learning pattern discovery. Supports .NET (C#, VB.NET), Vue.js, and T-SQL with intelligent error correction.
 
 ## What Makes This Special
 
@@ -21,12 +21,14 @@ This isn't just another code generator. It **learns from your codebase** and **g
 
 ## Features
 
-### Core Test Generation (v2)
+### Core Test Generation (v1.2)
+- ✅ **Multi-Language Support** - C#, VB.NET, Vue.js/TypeScript, T-SQL
 - ✅ **Multi-Provider Support** - OpenAI, Claude (Anthropic), Gemini (Google)
+- ✅ **Multi-Framework Support** - xUnit, NUnit, MSTest (.NET) | Vitest (Vue.js) | tSQLt (SQL)
 - ✅ **Modular Architecture** - Clean separation of providers, languages, and orchestration
 - ✅ **Cost Comparison** - Compare costs across providers before generating
 - ✅ **Smart Defaults** - GPT-4o mini (best quality/cost balance)
-- ✅ **xUnit Support** - Generates tests with Moq and FluentAssertions
+- ✅ **Comprehensive Testing** - Unit tests with mocking (Moq, @vue/test-utils, FakeTable)
 - ✅ **Existing Test Detection** - Skips classes that already have tests
 - ✅ **Dry Run Mode** - Preview what will be generated with cost estimates
 - ✅ **Pattern Filtering** - Generate tests for specific classes only
@@ -96,7 +98,24 @@ python generate_tests_v2.py /path/to/project -p ".*Controller$"
 
 # Force overwrite existing tests
 python generate_tests_v2.py /path/to/project --force
+
+# Language-specific examples
+python generate_tests_v2.py /path/to/project --language csharp    # C# (default)
+python generate_tests_v2.py /path/to/project --language vbnet     # VB.NET
+python generate_tests_v2.py /path/to/project --language vuejs     # Vue.js/TypeScript
+python generate_tests_v2.py /path/to/project --language tsql      # T-SQL
+
+# Test framework selection
+python generate_tests_v2.py /path/to/project --test-framework xunit   # xUnit (default)
+python generate_tests_v2.py /path/to/project --test-framework nunit   # NUnit
+python generate_tests_v2.py /path/to/project --test-framework mstest  # MSTest
 ```
+
+**Supported Languages:**
+- **C#**: ASP.NET Core controllers, services, repositories (xUnit, NUnit, MSTest)
+- **VB.NET**: Visual Basic .NET classes with proper syntax handling
+- **Vue.js**: Vue 3 components (Composition/Options API) and composables with Vitest
+- **T-SQL**: Stored procedures, functions, views with tSQLt framework
 
 **Supported Providers:**
 - **OpenAI** (default): GPT-4o mini ($0.0001/$0.0006 per 1K tokens) - Best quality/cost balance
