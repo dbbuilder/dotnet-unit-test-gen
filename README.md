@@ -21,15 +21,16 @@ This isn't just another code generator. It **learns from your codebase** and **g
 
 ## Features
 
-### Standard Test Generation
-- ✅ **Multi-Model Support** - OpenAI GPT-4/3.5 with automatic fallback
-- ✅ **Smart Analysis** - Detects Controllers, Services, and components
-- ✅ **Cost Optimization** - Uses cheaper models for simple classes
+### Core Test Generation (v2)
+- ✅ **Multi-Provider Support** - OpenAI, Claude (Anthropic), Gemini (Google)
+- ✅ **Modular Architecture** - Clean separation of providers, languages, and orchestration
+- ✅ **Cost Comparison** - Compare costs across providers before generating
+- ✅ **Smart Defaults** - GPT-4o mini (best quality/cost balance)
 - ✅ **xUnit Support** - Generates tests with Moq and FluentAssertions
 - ✅ **Existing Test Detection** - Skips classes that already have tests
-- ✅ **Dry Run Mode** - Preview what will be generated
+- ✅ **Dry Run Mode** - Preview what will be generated with cost estimates
 - ✅ **Pattern Filtering** - Generate tests for specific classes only
-- ✅ **Cost Tracking** - Real-time token usage and cost estimation
+- ✅ **Cost Tracking** - Real-time token usage and cost per provider
 
 ### LangChain 1.0 Pattern Learner (NEW - Fully Operational)
 - 🤖 **Automatic Pattern Discovery** - Analyzes compilation errors and discovers patterns autonomously
@@ -65,7 +66,46 @@ cp .env.template .env
 
 ## Quick Start
 
-### Standard Test Generation
+### Modern CLI (v2) - Recommended
+
+The new modular architecture supports multiple AI providers with a clean CLI:
+
+```bash
+# Generate tests using OpenAI GPT-4o mini (default - best quality/cost)
+python generate_tests_v2.py /path/to/project
+
+# Specify output directory
+python generate_tests_v2.py /path/to/project -o /path/to/project.Tests
+
+# Use different AI providers
+python generate_tests_v2.py /path/to/project --provider openai    # GPT-4o mini (default)
+python generate_tests_v2.py /path/to/project --provider claude    # Claude 3.5 Haiku (74% cheaper)
+python generate_tests_v2.py /path/to/project --provider gemini    # Gemini 2.0 Flash (97% cheaper)
+
+# Override model
+python generate_tests_v2.py /path/to/project --provider openai --model gpt-4o
+
+# Dry run (analyze only, estimate cost)
+python generate_tests_v2.py /path/to/project --dry-run
+
+# Show cost comparison across providers
+python generate_tests_v2.py /path/to/project --cost-comparison
+
+# Generate tests for specific classes only
+python generate_tests_v2.py /path/to/project -p ".*Controller$"
+
+# Force overwrite existing tests
+python generate_tests_v2.py /path/to/project --force
+```
+
+**Supported Providers:**
+- **OpenAI** (default): GPT-4o mini ($0.0001/$0.0006 per 1K tokens) - Best quality/cost balance
+- **Claude**: Claude 3.5 Haiku ($0.0008/$0.004 per 1K tokens) - 74% cheaper than GPT-4 Turbo
+- **Gemini**: Gemini 2.0 Flash ($0.0001/$0.0004 per 1K tokens) - 97% cheaper than GPT-4 Turbo
+
+See [COST-COMPARISON.md](COST-COMPARISON.md) for detailed cost analysis.
+
+### Standard Test Generation (Legacy)
 
 ```bash
 # Generate tests for a .NET project
