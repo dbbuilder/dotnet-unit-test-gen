@@ -401,3 +401,17 @@ Generate comprehensive tSQLt tests covering all execution paths now:"""
     def get_test_namespace(self, namespace: str) -> str:
         """Return test schema"""
         return f"{namespace}Tests"
+
+    def get_language_name(self) -> str:
+        """Return language name"""
+        return "T-SQL"
+
+    def get_test_framework(self) -> str:
+        """Return test framework"""
+        return 'tSQLt'
+
+    def get_test_file_path(self, source_path: Path, output_dir: Path) -> Path:
+        """Generate test file path for T-SQL procedure"""
+        # For T-SQL, create tests in output directory
+        test_name = source_path.stem + '.test.sql'
+        return output_dir / test_name

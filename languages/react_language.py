@@ -570,3 +570,17 @@ Generate the complete test file now:"""
     def get_test_namespace(self, namespace: str) -> str:
         """Return test directory (same as source for React)"""
         return namespace
+
+    def get_language_name(self) -> str:
+        """Return language name"""
+        return "React"
+
+    def get_test_framework(self) -> str:
+        """Return test framework"""
+        return 'jest'
+
+    def get_test_file_path(self, source_path: Path, output_dir: Path) -> Path:
+        """Generate test file path for React component"""
+        # For React, place test next to source file with .test.tsx extension
+        test_name = source_path.stem + '.test.tsx'
+        return source_path.parent / test_name

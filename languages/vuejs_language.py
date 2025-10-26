@@ -492,3 +492,17 @@ Generate the complete test file now:"""
     def get_test_namespace(self, namespace: str) -> str:
         """Return test directory (same as source for Vue.js)"""
         return namespace
+
+    def get_language_name(self) -> str:
+        """Return language name"""
+        return "Vue.js"
+
+    def get_test_framework(self) -> str:
+        """Return test framework"""
+        return 'vitest'
+
+    def get_test_file_path(self, source_path: Path, output_dir: Path) -> Path:
+        """Generate test file path for Vue.js component"""
+        # For Vue.js, place test next to source file with .test.ts extension
+        test_name = source_path.stem + '.test.ts'
+        return source_path.parent / test_name
