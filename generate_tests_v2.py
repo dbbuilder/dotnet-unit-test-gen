@@ -21,7 +21,9 @@ from providers.provider_factory import ProviderFactory
 from languages.csharp_language import CSharpLanguageHandler
 from languages.vbnet_language import VBNetLanguageHandler
 from languages.vuejs_language import VueJSLanguageHandler
+from languages.react_language import ReactLanguageHandler
 from languages.tsql_language import TSQLLanguageHandler
+from languages.integration_language import IntegrationTestHandler
 from patterns.pattern_cache import ProjectPatternCache
 
 console = Console()
@@ -47,7 +49,7 @@ console = Console()
 )
 @click.option(
     '--language',
-    type=click.Choice(['csharp', 'vbnet', 'vuejs', 'tsql'], case_sensitive=False),
+    type=click.Choice(['csharp', 'vbnet', 'vuejs', 'react', 'tsql', 'integration'], case_sensitive=False),
     default='csharp',
     help='Source language (default: csharp)'
 )
@@ -161,14 +163,20 @@ def main(
         language_handler = VBNetLanguageHandler()
     elif language == 'vuejs':
         language_handler = VueJSLanguageHandler()
+    elif language == 'react':
+        language_handler = ReactLanguageHandler()
     elif language == 'tsql':
         language_handler = TSQLLanguageHandler()
+    elif language == 'integration':
+        language_handler = IntegrationTestHandler()
+        console.print(f"[yellow]ℹ Integration tests generate cross-language tests[/yellow]")
     else:
         console.print(f"[red]✗ Unsupported language:[/red] {language}")
         sys.exit(1)
 
     console.print(f"[green]✓[/green] Language: [cyan]{language.upper()}[/cyan]")
-    console.print(f"[green]✓[/green] Test Framework: [cyan]{test_framework.upper()}[/cyan]")
+    if language != 'integration':
+        console.print(f"[green]✓[/green] Test Framework: [cyan]{test_framework.upper()}[/cyan]")
 
     # Create pattern cache
     pattern_cache = ProjectPatternCache(project_dir)

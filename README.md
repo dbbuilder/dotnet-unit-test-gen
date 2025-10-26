@@ -1,6 +1,6 @@
-# Universal AI-Powered Test Generator (v1.2)
+# Universal AI-Powered Test Generator (v1.3)
 
-Multi-language AI test generator with self-learning pattern discovery. Supports .NET (C#, VB.NET), Vue.js, and T-SQL with intelligent error correction.
+Multi-language AI test generator with self-learning pattern discovery. Supports .NET (C#, VB.NET), React, Vue.js, T-SQL, and full-stack integration testing with intelligent error correction.
 
 ## What Makes This Special
 
@@ -21,14 +21,15 @@ This isn't just another code generator. It **learns from your codebase** and **g
 
 ## Features
 
-### Core Test Generation (v1.2)
-- ✅ **Multi-Language Support** - C#, VB.NET, Vue.js/TypeScript, T-SQL
+### Core Test Generation (v1.3)
+- ✅ **Multi-Language Support** - C#, VB.NET, React, Vue.js, T-SQL, Integration Tests
 - ✅ **Multi-Provider Support** - OpenAI, Claude (Anthropic), Gemini (Google)
-- ✅ **Multi-Framework Support** - xUnit, NUnit, MSTest (.NET) | Vitest (Vue.js) | tSQLt (SQL)
+- ✅ **Multi-Framework Support** - xUnit/NUnit/MSTest (.NET) | Jest (React) | Vitest (Vue.js) | tSQLt (SQL) | Playwright (Integration)
+- ✅ **Integration Testing** - Full-stack E2E tests (Frontend → Backend → Database)
 - ✅ **Modular Architecture** - Clean separation of providers, languages, and orchestration
 - ✅ **Cost Comparison** - Compare costs across providers before generating
 - ✅ **Smart Defaults** - GPT-4o mini (best quality/cost balance)
-- ✅ **Comprehensive Testing** - Unit tests with mocking (Moq, @vue/test-utils, FakeTable)
+- ✅ **Comprehensive Testing** - Unit, integration, and E2E tests with mocking
 - ✅ **Existing Test Detection** - Skips classes that already have tests
 - ✅ **Dry Run Mode** - Preview what will be generated with cost estimates
 - ✅ **Pattern Filtering** - Generate tests for specific classes only
@@ -100,10 +101,12 @@ python generate_tests_v2.py /path/to/project -p ".*Controller$"
 python generate_tests_v2.py /path/to/project --force
 
 # Language-specific examples
-python generate_tests_v2.py /path/to/project --language csharp    # C# (default)
-python generate_tests_v2.py /path/to/project --language vbnet     # VB.NET
-python generate_tests_v2.py /path/to/project --language vuejs     # Vue.js/TypeScript
-python generate_tests_v2.py /path/to/project --language tsql      # T-SQL
+python generate_tests_v2.py /path/to/project --language csharp        # C# (default)
+python generate_tests_v2.py /path/to/project --language vbnet         # VB.NET
+python generate_tests_v2.py /path/to/project --language react         # React/TypeScript
+python generate_tests_v2.py /path/to/project --language vuejs         # Vue.js/TypeScript
+python generate_tests_v2.py /path/to/project --language tsql          # T-SQL
+python generate_tests_v2.py /path/to/project --language integration   # Full-stack integration
 
 # Test framework selection
 python generate_tests_v2.py /path/to/project --test-framework xunit   # xUnit (default)
@@ -114,8 +117,10 @@ python generate_tests_v2.py /path/to/project --test-framework mstest  # MSTest
 **Supported Languages:**
 - **C#**: ASP.NET Core controllers, services, repositories (xUnit, NUnit, MSTest)
 - **VB.NET**: Visual Basic .NET classes with proper syntax handling
+- **React**: React components (functional/class) and hooks with Jest + React Testing Library
 - **Vue.js**: Vue 3 components (Composition/Options API) and composables with Vitest
 - **T-SQL**: Stored procedures, functions, views with tSQLt framework
+- **Integration**: Full-stack E2E tests with Playwright (Frontend → Backend → Database)
 
 **Supported Providers:**
 - **OpenAI** (default): GPT-4o mini ($0.0001/$0.0006 per 1K tokens) - Best quality/cost balance
