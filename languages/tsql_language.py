@@ -370,18 +370,39 @@ Generate comprehensive tSQLt tests covering all execution paths now:"""
 
         return prompt
 
-    def auto_fix_syntax(self, test_code: str, class_info: ClassInfo) -> str:
+    def extract_code_from_response(self, response: str) -> str:
+        """
+        Extract SQL code from AI response (may contain markdown)
+
+        Args:
+            response: AI response text
+
+        Returns:
+            Extracted SQL code
+        """
+        # Try to find ```sql or ```tsql blocks
+        pattern = r'```(?:sql|tsql|plsql)?\n(.*?)\n```'
+        matches = re.findall(pattern, response, re.DOTALL)
+
+        if matches:
+            return matches[0].strip()
+
+        # If no code block, return entire response
+        return response.strip()
+
+    def auto_fix_syntax(self, test_code: str) -> tuple[str, List[str], List[str]]:
         """
         Auto-fix common T-SQL test syntax issues
 
         Args:
             test_code: Generated test code
-            class_info: Original stored procedure/function info
 
         Returns:
-            Fixed test code
+            Tuple of (fixed_code, fixes_applied, warnings)
         """
         fixed_code = test_code
+        fixes = []
+        warnings = []
 
         # Ensure GO statements are on their own lines
         fixed_code = re.sub(r';\s*GO\s*;', ';\nGO\n', fixed_code, flags=re.IGNORECASE)
@@ -389,10 +410,13 @@ Generate comprehensive tSQLt tests covering all execution paths now:"""
 
         # Ensure test class creation is at the top
         if 'NewTestClass' not in fixed_code:
-            schema = class_info.metadata.get('schema', 'dbo')
+            # Try to infer schema from test code
+            schema_match = re.search(r'EXEC\s+(\w+)\.', fixed_code)
+            schema = schema_match.group(1) if schema_match else 'dbo'
             fixed_code = f"EXEC tSQLt.NewTestClass '{schema}Tests';\nGO\n\n" + fixed_code
+            fixes.append(f"Added test class creation for {schema}Tests")
 
-        return fixed_code
+        return fixed_code, fixes, warnings
 
     def get_test_class_name(self, class_name: str) -> str:
         """Generate test file name"""

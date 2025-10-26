@@ -541,27 +541,50 @@ Generate the complete test file now:"""
 
         return prompt
 
-    def auto_fix_syntax(self, test_code: str, class_info: ClassInfo) -> str:
+    def extract_code_from_response(self, response: str) -> str:
+        """
+        Extract TypeScript/JavaScript code from AI response (may contain markdown)
+
+        Args:
+            response: AI response text
+
+        Returns:
+            Extracted code
+        """
+        # Try to find ```typescript or ```javascript or ```tsx blocks
+        pattern = r'```(?:typescript|tsx|ts|javascript|jsx|js)?\n(.*?)\n```'
+        matches = re.findall(pattern, response, re.DOTALL)
+
+        if matches:
+            return matches[0].strip()
+
+        # If no code block, return entire response
+        return response.strip()
+
+    def auto_fix_syntax(self, test_code: str) -> tuple[str, List[str], List[str]]:
         """
         Auto-fix common React test syntax issues
 
         Args:
             test_code: Generated test code
-            class_info: Original component/hook info
 
         Returns:
-            Fixed test code
+            Tuple of (fixed_code, fixes_applied, warnings)
         """
         fixed_code = test_code
+        fixes = []
+        warnings = []
 
         # Ensure proper imports
         if '@testing-library/react' not in fixed_code:
             fixed_code = "import { render, screen } from '@testing-library/react'\n" + fixed_code
+            fixes.append("Added @testing-library/react imports")
 
         if 'userEvent' not in fixed_code and 'user interaction' in test_code.lower():
             fixed_code = "import userEvent from '@testing-library/user-event'\n" + fixed_code
+            fixes.append("Added userEvent import")
 
-        return fixed_code
+        return fixed_code, fixes, warnings
 
     def get_test_class_name(self, class_name: str) -> str:
         """Generate test file name"""
