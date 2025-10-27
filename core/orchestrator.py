@@ -85,7 +85,8 @@ class TestGenerationOrchestrator:
         provider: BaseAIProvider,
         language_handler: Optional[BaseLanguageHandler] = None,
         pattern_cache: Optional[ProjectPatternCache] = None,
-        max_parallel: int = 1
+        max_parallel: int = 1,
+        db_config: Optional[Dict[str, Any]] = None
     ):
         """
         Initialize orchestrator
@@ -97,6 +98,7 @@ class TestGenerationOrchestrator:
             language_handler: Language handler (default: C#)
             pattern_cache: Pattern cache (auto-created if None)
             max_parallel: Maximum parallel generations (default: 1)
+            db_config: Database configuration for T-SQL extraction (optional)
         """
         self.project_dir = project_dir
         self.output_dir = output_dir
@@ -104,6 +106,7 @@ class TestGenerationOrchestrator:
         self.language_handler = language_handler or CSharpLanguageHandler()
         self.pattern_cache = pattern_cache or ProjectPatternCache(project_dir)
         self.max_parallel = max_parallel
+        self.db_config = db_config
 
         # Ensure output directory exists
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -136,7 +139,7 @@ class TestGenerationOrchestrator:
 
         # Discover files
         console.print("[bold]Discovering source files...[/bold]")
-        source_files = self.language_handler.detect_files(self.project_dir, pattern)
+        source_files = self.language_handler.detect_files(self.project_dir, pattern, self.db_config)
         self.stats.total_files = len(source_files)
 
         console.print(f"Found [cyan]{len(source_files)}[/cyan] files to process\n")

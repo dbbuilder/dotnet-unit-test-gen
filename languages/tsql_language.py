@@ -40,17 +40,37 @@ class TSQLLanguageHandler(BaseLanguageHandler):
         """Return default test framework (tSQLt)"""
         return 'tsqlt'
 
-    def detect_files(self, project_dir: Path, pattern: Optional[str] = None) -> List[Path]:
+    def detect_files(
+        self,
+        project_dir: Path,
+        pattern: Optional[str] = None,
+        db_config: Optional[Dict[str, Any]] = None
+    ) -> List[Path]:
         """
         Find all T-SQL stored procedures and functions
 
         Args:
-            project_dir: Project directory to search
+            project_dir: Project directory to search (or temp dir for DB extraction)
             pattern: Optional regex pattern to filter
+            db_config: Optional database connection config for direct extraction
+                      Format: {
+                          'server': 'hostname',
+                          'port': 1433,
+                          'database': 'dbname',
+                          'username': 'user',
+                          'password': 'pass',
+                          'trust_cert': True,
+                          'schema': 'dbo' (optional)
+                      }
 
         Returns:
             List of SQL file paths
         """
+        # If database config provided, extract from database
+        if db_config:
+            return self._extract_from_database(project_dir, pattern, db_config)
+
+        # Otherwise, scan for .sql files (existing behavior)
         sql_files = []
 
         # Find .sql files
@@ -76,6 +96,71 @@ class TSQLLanguageHandler(BaseLanguageHandler):
                 continue
 
         return sorted(sql_files, key=lambda p: p.name)
+
+    def _extract_from_database(
+        self,
+        project_dir: Path,
+        pattern: Optional[str],
+        db_config: Dict[str, Any]
+    ) -> List[Path]:
+        """
+        Extract objects from database and save to temp files
+
+        Args:
+            project_dir: Project directory (will create .temp_db_extract subdirectory)
+            pattern: Optional regex pattern to filter objects
+            db_config: Database connection configuration
+
+        Returns:
+            List of SQL file paths
+        """
+        from .tsql_db_extractor import TSQLDatabaseExtractor
+
+        print(f"\n📊 Extracting from SQL Server database...")
+        print(f"   Server: {db_config['server']}")
+        print(f"   Database: {db_config['database']}")
+        if db_config.get('schema'):
+            print(f"   Schema: {db_config['schema']}")
+
+        extractor = TSQLDatabaseExtractor(
+            server=db_config['server'],
+            database=db_config['database'],
+            username=db_config['username'],
+            password=db_config['password'],
+            port=db_config.get('port', 1433),
+            trust_cert=db_config.get('trust_cert', False)
+        )
+
+        try:
+            extractor.connect()
+
+            # Get database stats
+            stats = extractor.get_database_stats()
+            print(f"\n📈 Database Statistics:")
+            print(f"   Procedures: {stats['procedures']}")
+            print(f"   Functions: {stats['functions']}")
+            print(f"   Total Objects: {stats['total_objects']}")
+
+            # Extract objects
+            objects = extractor.extract_all_objects(
+                schema=db_config.get('schema'),
+                pattern=pattern
+            )
+
+            if not objects:
+                print(f"\n⚠️  No objects found matching criteria")
+                return []
+
+            print(f"\n✓ Extracted {len(objects)} objects")
+
+            # Save to temp directory
+            temp_dir = project_dir / '.temp_db_extract'
+            file_paths = extractor.save_to_files(objects, temp_dir)
+
+            return file_paths
+
+        finally:
+            extractor.disconnect()
 
     def _extract_object_name(self, sql_content: str) -> Optional[str]:
         """Extract stored procedure or function name"""

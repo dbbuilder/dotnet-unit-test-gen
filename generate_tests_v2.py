@@ -84,6 +84,47 @@ console = Console()
     type=int,
     help='Maximum number of files to process (for testing)'
 )
+@click.option(
+    '--db-server',
+    type=str,
+    help='SQL Server hostname (for T-SQL language only, e.g., localhost or sqltest.schoolvision.net)'
+)
+@click.option(
+    '--db-port',
+    type=int,
+    default=1433,
+    help='SQL Server port (default: 1433)'
+)
+@click.option(
+    '--db-name',
+    type=str,
+    help='Database name (for T-SQL language only)'
+)
+@click.option(
+    '--db-user',
+    type=str,
+    help='Database username (for T-SQL language only)'
+)
+@click.option(
+    '--db-password',
+    type=str,
+    help='Database password (or use --db-password-env for environment variable)'
+)
+@click.option(
+    '--db-password-env',
+    type=str,
+    help='Environment variable containing database password'
+)
+@click.option(
+    '--db-schema',
+    type=str,
+    help='Database schema to extract (e.g., dbo). If not specified, extracts all schemas'
+)
+@click.option(
+    '--trust-cert',
+    is_flag=True,
+    help='Trust server certificate (for self-signed certs)'
+)
 def main(
     project_dir: Path,
     output_dir: Optional[Path],
@@ -95,7 +136,15 @@ def main(
     force: bool,
     dry_run: bool,
     cost_comparison: bool,
-    max_files: Optional[int]
+    max_files: Optional[int],
+    db_server: Optional[str],
+    db_port: int,
+    db_name: Optional[str],
+    db_user: Optional[str],
+    db_password: Optional[str],
+    db_password_env: Optional[str],
+    db_schema: Optional[str],
+    trust_cert: bool
 ):
     """
     Generate unit tests for .NET projects using AI
@@ -178,6 +227,34 @@ def main(
     if language != 'integration':
         console.print(f"[green]✓[/green] Test Framework: [cyan]{test_framework.upper()}[/cyan]")
 
+    # Handle database extraction for T-SQL
+    db_config = None
+    if language == 'tsql' and db_server and db_name and db_user:
+        # Get password from env var if specified
+        password = db_password
+        if db_password_env:
+            import os
+            password = os.getenv(db_password_env)
+            if not password:
+                console.print(f"[red]✗ Environment variable not found:[/red] {db_password_env}")
+                sys.exit(1)
+
+        if not password:
+            console.print("[red]✗ Database password required:[/red] Use --db-password or --db-password-env")
+            sys.exit(1)
+
+        db_config = {
+            'server': db_server,
+            'port': db_port,
+            'database': db_name,
+            'username': db_user,
+            'password': password,
+            'trust_cert': trust_cert,
+            'schema': db_schema
+        }
+
+        console.print(f"[cyan]📊 Database Mode:[/cyan] Will extract from SQL Server")
+
     # Create pattern cache
     pattern_cache = ProjectPatternCache(project_dir)
     console.print(f"[green]✓[/green] Pattern cache: [cyan]{pattern_cache.count()} patterns loaded[/cyan]")
@@ -188,7 +265,8 @@ def main(
         output_dir=output_dir,
         provider=ai_provider,
         language_handler=language_handler,
-        pattern_cache=pattern_cache
+        pattern_cache=pattern_cache,
+        db_config=db_config
     )
 
     # Generate tests

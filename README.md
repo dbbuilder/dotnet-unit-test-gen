@@ -118,7 +118,7 @@ python generate_tests_v2.py /path/to/project --test-framework mstest  # MSTest
 - **C#**: ASP.NET Core controllers, services, repositories (xUnit, NUnit, MSTest)
 - **VB.NET**: Visual Basic .NET classes with proper syntax handling
 - **React**: React components (functional/class) and hooks with Jest + React Testing Library
-- **Vue.js**: Vue 3 components (Composition/Options API) and composables with Vitest
+- **Vue.js**: Vue 2 & Vue 3 components (auto-detected) with Vitest - supports both Composition and Options API
 - **T-SQL**: Stored procedures, functions, views with tSQLt framework
 - **Integration**: Full-stack E2E tests with Playwright (Frontend → Backend → Database)
 
@@ -202,6 +202,257 @@ python generate_tests.py /mnt/d/dev2/remotec/src/RemoteC.Api \
     -p "Controller" \
     --force
 ```
+
+## Vue.js Testing (Vue 2 & Vue 3 Support)
+
+The generator automatically detects your Vue version from `package.json` and generates appropriate test syntax.
+
+### Vue 2 Example (Auto-Detected)
+
+**Project**: Vue 2.7.16 with Vuex 3, Vue Router 3
+
+```bash
+# Automatic version detection
+python generate_tests_v2.py /path/to/vue2/project \
+    --language vuejs \
+    -o /path/to/tests
+
+# Generate specific component
+python generate_tests_v2.py /path/to/vue2/project \
+    --language vuejs \
+    -p "^CartSidebar$" \
+    --force
+```
+
+**Generated Test (Vue 2 Syntax)**:
+```typescript
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { mount, createLocalVue } from '@vue/test-utils'
+import CartSidebar from './CartSidebar'
+import Vue from 'vue'
+import Vuex from 'vuex'
+import VueRouter from 'vue-router'
+
+// Vue 2: Create localVue instance
+const localVue = createLocalVue()
+localVue.use(Vuex)
+localVue.use(VueRouter)
+
+describe('CartSidebar', () => {
+  let store
+  let router
+
+  beforeEach(() => {
+    // Vue 2: Use new Vuex.Store()
+    store = new Vuex.Store({
+      state: {
+        cart: { items: [] }
+      },
+      getters: {
+        cartItemCount: () => 0,
+        cartTotal: () => 0,
+        isCartEmpty: () => true
+      },
+      actions: {
+        updateProductQuantity: vi.fn(),
+        removeProductFromCart: vi.fn()
+      }
+    })
+
+    // Vue 2: Use new VueRouter()
+    router = new VueRouter({
+      routes: [
+        { path: '/shop', component: { template: '<div>Shop</div>' } }
+      ]
+    })
+  })
+
+  it('renders properly with empty cart', () => {
+    // Vue 2: Mount with localVue, propsData
+    const wrapper = mount(CartSidebar, {
+      localVue,
+      store,
+      router
+    })
+
+    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.text()).toContain('Your cart is empty')
+  })
+})
+```
+
+**Key Vue 2 Features**:
+- ✅ Uses `createLocalVue()` for test isolation
+- ✅ Uses `new Vuex.Store()` (Vuex 3)
+- ✅ Uses `new VueRouter()` (Vue Router 3)
+- ✅ Includes `localVue` in all mount calls
+- ✅ Uses `propsData` for props (if needed)
+
+### Vue 3 Example (Auto-Detected)
+
+**Project**: Vue 3.2+ with Vuex 4 or Pinia
+
+```bash
+python generate_tests_v2.py /path/to/vue3/project \
+    --language vuejs \
+    -o /path/to/tests
+```
+
+**Generated Test (Vue 3 Syntax)**:
+```typescript
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { mount } from '@vue/test-utils'
+import ProductCard from './ProductCard'
+import { createStore } from 'vuex'
+import { createRouter, createMemoryHistory } from 'vue-router'
+
+describe('ProductCard', () => {
+  let store
+  let router
+
+  beforeEach(() => {
+    // Vue 3: Use createStore() from Vuex 4
+    store = createStore({
+      state: {
+        cart: { items: [] }
+      },
+      getters: {
+        isInCart: () => false
+      },
+      actions: {
+        addToCart: vi.fn()
+      }
+    })
+
+    // Vue 3: Use createRouter() with createMemoryHistory()
+    router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: '/product/:id', component: { template: '<div>Product</div>' } }
+      ]
+    })
+  })
+
+  it('renders product information', () => {
+    // Vue 3: Mount with props, global.plugins
+    const wrapper = mount(ProductCard, {
+      props: {
+        product: {
+          id: 1,
+          name: 'Test Product',
+          price: 29.99
+        }
+      },
+      global: {
+        plugins: [store, router]
+      }
+    })
+
+    expect(wrapper.text()).toContain('Test Product')
+    expect(wrapper.text()).toContain('$29.99')
+  })
+})
+```
+
+**Key Vue 3 Features**:
+- ✅ No `localVue` needed
+- ✅ Uses `createStore()` (Vuex 4) or Pinia
+- ✅ Uses `createRouter()` + `createMemoryHistory()`
+- ✅ Uses `props` (not propsData)
+- ✅ Uses `global.plugins` for store/router
+
+### Vue Version Detection
+
+The generator automatically detects Vue version by reading `package.json`:
+
+```json
+{
+  "dependencies": {
+    "vue": "^2.7.16"  // → Generates Vue 2 tests
+  }
+}
+```
+
+```json
+{
+  "dependencies": {
+    "vue": "^3.2.47"  // → Generates Vue 3 tests
+  }
+}
+```
+
+**Fallback**: If `package.json` is not found, defaults to Vue 3.
+
+### Real-World Example: E-Commerce App (Vue 2)
+
+**Project**: ecommerce-app with 56 components
+**Vue Version**: 2.7.16
+**Cost**: $0.0613 (6 cents)
+**Duration**: 25.2 minutes
+**Success Rate**: 100% (56/56 tests generated)
+
+```bash
+python generate_tests_v2.py /mnt/d/dev2/michaeljr/ecommerce-app/src \
+    --language vuejs \
+    -o /mnt/d/dev2/michaeljr/ecommerce-app/src \
+    --force
+
+# Generated tests for:
+# - Cart components (CartSidebar, FloatingCartButton)
+# - Product components (ProductCard, ProductDetailsModal)
+# - Checkout flow (ShippingModal, PickupLocationSelector)
+# - UI components (ToastManager, PromoBanner)
+# - Views (LandingPage, ShopPage, CheckoutFlow)
+```
+
+**Test Infrastructure Auto-Generated**:
+- `vitest.config.ts` - Vitest configuration
+- `tests/setup.ts` - Global mocks (window.matchMedia, IntersectionObserver)
+- `tests/helpers/store.ts` - Vuex store utilities
+- `tests/helpers/router.ts` - Router utilities
+- `TESTME.md` - Comprehensive testing guide
+
+### API Comparison (Vue 2 vs Vue 3)
+
+| Feature | Vue 2 | Vue 3 |
+|---------|-------|-------|
+| **Test Utils** | `@vue/test-utils@^1.x` | `@vue/test-utils@^2.x` |
+| **Isolation** | `createLocalVue()` | Not needed |
+| **Store** | `new Vuex.Store()` | `createStore()` (Vuex 4) |
+| **Router** | `new VueRouter()` | `createRouter()` |
+| **History** | `mode: 'abstract'` | `createMemoryHistory()` |
+| **Props** | `propsData` | `props` |
+| **Plugins** | `localVue.use(Plugin)` | `global.plugins: [plugin]` |
+| **Mount** | `{ localVue, store, router }` | `{ global: { plugins } }` |
+
+### Running Generated Tests
+
+```bash
+# Install dependencies (Vue 2)
+npm install --save-dev \
+    vitest \
+    @vue/test-utils@^1.3.6 \
+    @vitejs/plugin-vue2 \
+    jsdom
+
+# Install dependencies (Vue 3)
+npm install --save-dev \
+    vitest \
+    @vue/test-utils@^2.4.0 \
+    @vitejs/plugin-vue \
+    jsdom
+
+# Run tests
+npm test
+
+# Run with coverage
+npm test -- --coverage
+
+# Watch mode
+npm test -- --watch
+```
+
+See generated `TESTME.md` in your project for detailed setup and troubleshooting.
 
 ## Configuration
 
