@@ -392,12 +392,124 @@ class VueJSLanguageHandler(BaseLanguageHandler):
         emits = metadata.get('emits', [])
         api_style = metadata.get('api_style', 'composition')
 
+        # Detect Vue version
+        vue_version = self._detect_vue_version(class_info.file_path.parent)
+
         props_str = '\n'.join([f"  - {p['name']}: {p['type']}" for p in props]) if props else '  None'
         emits_str = '\n'.join([f"  - {e}" for e in emits]) if emits else '  None'
 
-        prompt = f"""Generate comprehensive Vitest unit tests for the following Vue.js component.
+        # Generate version-specific prompt
+        if vue_version == 2:
+            return self._generate_vue2_component_test_prompt(class_info, props_str, emits_str, api_style)
+        else:
+            return self._generate_vue3_component_test_prompt(class_info, props_str, emits_str, api_style)
+
+    def _generate_vue2_component_test_prompt(self, class_info: ClassInfo, props_str: str, emits_str: str, api_style: str) -> str:
+        """Generate Vue 2-specific test prompt"""
+        prompt = f"""Generate comprehensive Vitest unit tests for the following Vue 2 component.
 
 **Component:** {class_info.name}
+**Vue Version:** 2.x
+**API Style:** Options API
+
+**Source Code:**
+```vue
+{class_info.source_code}
+```
+
+**Component Details:**
+- Name: {class_info.name}
+- Props:
+{props_str}
+- Emits:
+{emits_str}
+- Methods: {len(class_info.methods)}
+
+**CRITICAL Vue 2 Requirements:**
+1. Use Vitest + @vue/test-utils@^1.x (Vue 2 version)
+2. Use Vue 2 API syntax ONLY - DO NOT use Vue 3 APIs
+3. Import Vue and createLocalVue for proper test isolation
+4. Use Vuex (v3) with `new Vuex.Store()` - NOT createStore()
+5. Use Vue Router (v3) with `new VueRouter()` - NOT createRouter()
+6. Use `localVue` parameter in mount options
+7. Use `propsData` instead of `props` in mount options (Vue 2)
+
+**Required Imports for Vue 2:**
+```typescript
+import {{ describe, it, expect, vi, beforeEach }} from 'vitest'
+import {{ mount, createLocalVue }} from '@vue/test-utils'
+import {class_info.name} from './{class_info.file_path.stem}'
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+const localVue = createLocalVue()
+localVue.use(Vuex)
+```
+
+**Example Vue 2 Test Structure (WITH localVue):**
+```typescript
+describe('{class_info.name}', () => {{
+  let localVue
+  let store
+
+  beforeEach(() => {{
+    localVue = createLocalVue()
+    localVue.use(Vuex)
+
+    store = new Vuex.Store({{
+      state: {{
+        // state here
+      }},
+      getters: {{
+        // getters here
+      }},
+      actions: {{
+        // actions here
+      }}
+    }})
+  }})
+
+  it('renders properly with required props', () => {{
+    const wrapper = mount({class_info.name}, {{
+      localVue,
+      store,
+      propsData: {{
+        // prop values here
+      }}
+    }})
+
+    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.text()).toContain('expected text')
+  }})
+
+  it('emits event when button clicked', async () => {{
+    const wrapper = mount({class_info.name}, {{
+      localVue,
+      store
+    }})
+
+    await wrapper.find('button').trigger('click')
+    expect(wrapper.emitted('event-name')).toBeTruthy()
+  }})
+}})
+```
+
+**IMPORTANT:**
+- ALWAYS include `localVue` in mount options
+- ALWAYS define localVue variable at the top of describe block or in beforeEach
+- Use `new Vuex.Store()` NOT `createStore()`
+- Use `propsData` NOT `props` in mount options
+
+Generate the complete Vue 2 test file now:"""
+
+        return prompt
+
+    def _generate_vue3_component_test_prompt(self, class_info: ClassInfo, props_str: str, emits_str: str, api_style: str) -> str:
+        """Generate Vue 3-specific test prompt"""
+        prompt = f"""Generate comprehensive Vitest unit tests for the following Vue 3 component.
+
+**Component:** {class_info.name}
+**Vue Version:** 3.x
 **API Style:** {api_style.upper()}
 
 **Source Code:**
@@ -414,15 +526,13 @@ class VueJSLanguageHandler(BaseLanguageHandler):
 - Methods: {len(class_info.methods)}
 - Composables Used: {', '.join(class_info.dependencies) if class_info.dependencies else 'None'}
 
-**Test Requirements:**
-1. Use Vitest + @vue/test-utils
-2. Test component rendering with various prop combinations
-3. Test all user interactions (clicks, inputs, etc.)
-4. Test emitted events
-5. Test computed properties and watchers
-6. Mock all external composables and API calls
-7. Test slots if present
-8. Test lifecycle hooks if applicable
+**Vue 3 Test Requirements:**
+1. Use Vitest + @vue/test-utils@^2.x (Vue 3 version)
+2. Use Vue 3 API syntax
+3. Use `createStore` from Vuex 4 or Pinia
+4. Use `createRouter` and `createMemoryHistory` from Vue Router 4
+5. Use `props` (not propsData) in mount options
+6. Use `global.plugins` for plugins instead of localVue
 
 **Required Imports:**
 ```typescript
